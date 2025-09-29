@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Karriere India | The Opportunity Journal</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Patrick+Hand&display=swap');
+
+body {
+    font-family: 'Patrick Hand', cursive;
+    background: #fdfdfd;
+    background-image: linear-gradient(to bottom, transparent 97%, #ddd 97%);
+    background-size: 100% 2.5rem; 
+}
+
+.job-card {
+    background: #fff;
+    border: 2px solid #000;
+    border-radius: 8px;
+    box-shadow: 4px 4px 0 #000;
+    transition: transform 0.1s, box-shadow 0.1s;
+}
+.job-card:hover {
+    transform: translateY(-2px) translateX(-2px);
+    box-shadow: 6px 6px 0 #F87171;
+}
+.job-button {
+    background-color: #000;
+    color: #fff;
+    border-radius: 6px;
+    padding: 0.5rem 1rem;
+    text-decoration: none;
+}
+.job-button:hover {
+    background-color: #F87171;
+}
+header { border-bottom: 3px dashed #000; }
+.search-input {
+    border: 2px solid #000;
+    border-radius: 8px;
+    padding: 0.5rem 1rem;
+}
+</style>
+</head>
+<body>
+
+<header class="text-center py-8 bg-white/70 backdrop-blur-sm sticky top-0 z-10">
+    <h1 class="text-4xl font-bold">🗒️ Karriere India | The Opportunity Journal</h1>
+    <p class="text-xl mt-2">A clear path to your next role. No distractions, just honest listings.</p>
+</header>
+
+<main class="container mx-auto px-4 py-10">
+    <h2 class="text-3xl font-bold mb-8 text-center">Latest Opportunities</h2>
+
+    <!-- Search -->
+    <div class="flex justify-center mb-10">
+        <input type="text" id="searchInput" placeholder="Scribble down your desired job, company, or location..." class="search-input w-full max-w-xl">
+    </div>
+
+    <!-- Jobs container -->
+    <div id="job-listings" class="grid gap-8 md:grid-cols-2 lg:grid-cols-3"></div>
+</main>
+
+<footer class="text-center py-6 border-t-2 border-black mt-10">
+    <p>✏️ Curated for Growth · © 2025 Karriere India</p>
+</footer>
+
+<script>
+async function loadJobs(file, containerId) {
+    const res = await fetch(file);
+    const jobs = await res.json();
+    const container = document.getElementById(containerId);
+    container.innerHTML = "";
+
+    jobs.forEach(job => {
+        const card = document.createElement("div");
+        card.className = "job-card p-6 space-y-3";
+        card.innerHTML = `
+            <h3 class="text-2xl font-bold">${job.title}</h3>
+            <p class="text-lg mt-1">${job.company}</p>
+            <p class="text-sm mt-1">📍 ${job.location} | 📅 Posted: ${job.postedDate}</p>
+            <p class="text-gray-600 mt-2">${job.description}</p>
+            <a href="${job.link}" target="_blank" class="job-button inline-block">Jump to Apply →</a>
+        `;
+        container.appendChild(card);
+    });
+}
+
+// Load all jobs
+loadJobs("real_jobs.json", "job-listings");
+
+// Search functionality
+const searchInput = document.getElementById('searchInput');
+searchInput.addEventListener('input', () => loadJobs("real_jobs.json", "job-listings"));
+</script>
+
+</body>
+</html>
